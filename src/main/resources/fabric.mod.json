@@ -23,7 +23,7 @@
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "pinesmp-api.mixins.json"
   ],
 
   "depends": {
