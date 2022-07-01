@@ -4,7 +4,7 @@ import com.mojang.brigadier.Command;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import net.ddns.pinesmp.api.listeners.ServerStartedListener;
-import net.ddns.pinesmp.api.net.PlayerServlet;
+import net.ddns.pinesmp.api.net.MinecraftServlet;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -24,6 +24,7 @@ public class PineSMPAPI implements ModInitializer {
 	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final Logger LOGGER = LoggerFactory.getLogger("pinesmp-api");
 	public static MinecraftServer server = null;
+	private static MinecraftServlet servlet = null;
 
 	// this is a singleton
 	private static PineSMPAPI instance = null;
@@ -63,5 +64,6 @@ public class PineSMPAPI implements ModInitializer {
 
 	public void onStart(MinecraftServer server) {
 		PineSMPAPI.server = server;
+		PineSMPAPI.servlet = MinecraftServlet.startServlet(server, 80);
 	}
 }
