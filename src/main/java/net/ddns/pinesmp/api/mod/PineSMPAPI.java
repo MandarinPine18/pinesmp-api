@@ -4,6 +4,7 @@ import com.mojang.brigadier.Command;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import net.ddns.pinesmp.api.listeners.ServerStartedListener;
+import net.ddns.pinesmp.api.net.PlayerServlet;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -22,6 +23,14 @@ public class PineSMPAPI implements ModInitializer {
 	// It is considered best practice to use your mod id as the logger's name.
 	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final Logger LOGGER = LoggerFactory.getLogger("pinesmp-api");
+	public static MinecraftServer server = null;
+
+	// this is a singleton
+	private static PineSMPAPI instance = null;
+
+	public static PineSMPAPI getInstance() {
+		return instance;
+	}
 
 	@Override
 	public void onInitialize() {
@@ -29,11 +38,12 @@ public class PineSMPAPI implements ModInitializer {
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
 
-		ServerStartedListener serverStartedListener = new ServerStartedListener();
-		ServerLifecycleEvents.SERVER_STARTED.register(serverStartedListener);
+		PineSMPAPI.instance = this;
+
+		ServerLifecycleEvents.SERVER_STARTED.register(new ServerStartedListener());
 
 		Command<ServerCommandSource> command = context -> {
-			MinecraftServer server = serverStartedListener.getServer();
+			assert server != null;
 			server.sendMessage(Text.literal("test command called"));
 			for (ServerPlayerEntity player : PlayerLookup.all(server)) {
 				server.sendMessage(player.getDisplayName());
@@ -49,5 +59,9 @@ public class PineSMPAPI implements ModInitializer {
 			dispatcher.getRoot().addChild(testNode);
 		}));
 		LOGGER.info("Hello Fabric world!");
+	}
+
+	public void onStart(MinecraftServer server) {
+		PineSMPAPI.server = server;
 	}
 }
