@@ -1,4 +1,4 @@
-package net.ddns.pinesmp.api.net;
+package net.pinesmp.pinesmpapi.net;
 
 import net.minecraft.server.MinecraftServer;
 import spark.Spark;

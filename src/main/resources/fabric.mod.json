@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "pinesmp-api",
-  "version": "${version}",
+  "version": "0.1.0",
 
   "name": "PineSMP API",
   "description": "This is an example description! Tell everyone what your mod is about!",
@@ -19,7 +19,7 @@
   "environment": "server",
   "entrypoints": {
     "main": [
-      "net.ddns.pinesmp.api.mod.PineSMPAPI"
+      "net.pinesmp.pinesmpapi.mod.PineSMPAPI"
     ]
   },
   "mixins": [

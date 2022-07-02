@@ -1,10 +1,10 @@
-package net.ddns.pinesmp.api.mod;
+package net.pinesmp.pinesmpapi.mod;
 
 import com.mojang.brigadier.Command;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import net.ddns.pinesmp.api.listeners.ServerStartedListener;
-import net.ddns.pinesmp.api.net.MinecraftServlet;
+import net.pinesmp.pinesmpapi.listeners.ServerStartedListener;
+import net.pinesmp.pinesmpapi.net.MinecraftServlet;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;

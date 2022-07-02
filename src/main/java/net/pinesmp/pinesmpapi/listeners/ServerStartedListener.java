@@ -1,6 +1,6 @@
-package net.ddns.pinesmp.api.listeners;
+package net.pinesmp.pinesmpapi.listeners;
 
-import net.ddns.pinesmp.api.mod.PineSMPAPI;
+import net.pinesmp.pinesmpapi.mod.PineSMPAPI;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.server.MinecraftServer;
 
