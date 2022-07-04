@@ -15,8 +15,12 @@ import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.pinesmp.pinesmpapi.util.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.util.HashMap;
 
 public class PineSMPAPI implements ModInitializer {
 	// This logger is used to write text to the console and the log file.
@@ -25,6 +29,7 @@ public class PineSMPAPI implements ModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger("pinesmp-api");
 	public static MinecraftServer server = null;
 	private static MinecraftServlet servlet = null;
+	private static Configuration configuration = null;
 
 	// this is a singleton
 	private static PineSMPAPI instance = null;
@@ -65,5 +70,13 @@ public class PineSMPAPI implements ModInitializer {
 	public void onStart(MinecraftServer server) {
 		PineSMPAPI.server = server;
 		PineSMPAPI.servlet = MinecraftServlet.startServlet(server, 80);
+	}
+
+	public static HashMap<String, String> getConfig() {
+		if (configuration == null) {
+			configuration = new Configuration(new File("config/pinesmp-api.properties"), new File("config/pinesmp-api"));
+		}
+
+		return configuration;
 	}
 }
