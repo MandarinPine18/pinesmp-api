@@ -98,12 +98,12 @@ public class Configuration extends HashMap <String, String> {
 			throw new ConfigurationException("File import failed unexpectedly.");
 		}
 
-		Stream<String> lines = in.lines();
+		ArrayList<String> lines = new ArrayList<String>(in.lines().toList());
 
 		for (String key: this.keySet()) {
 			String line;
 			try {
-				line = lines.filter((x) -> (x.startsWith(key + "="))).findFirst().get();    // get a line matching the key
+				line = lines.stream().filter((x) -> (x.startsWith(key + "="))).findFirst().get();    // get a line matching the key
 			} catch (NoSuchElementException ignored) {
 				continue;       // if a key isn't there, it'll just default - no need to panic
 			}
