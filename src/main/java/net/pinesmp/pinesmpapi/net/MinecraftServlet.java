@@ -1,10 +1,19 @@
 package net.pinesmp.pinesmpapi.net;
 
+import com.google.gson.Gson;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.pinesmp.pinesmpapi.mod.PineSMPAPI;
 import net.pinesmp.pinesmpapi.util.Configuration;
+import spark.Filter;
+import spark.Request;
+import spark.Response;
 import spark.Spark;
 
-import static spark.Spark.get;
+import java.util.*;
+
+import static spark.Spark.*;
 
 public class MinecraftServlet {
 	private final MinecraftServer server;
@@ -61,6 +70,31 @@ public class MinecraftServlet {
 			Spark.secure(configuration.keystoreFile, configuration.keystorePassword, configuration.truststoreFile, configuration.truststorePassword);
 		}
 
-		get("/api/test", (request, response) -> "Server running");      // just a test endpoint
+		path("/api", () -> {
+			before("/*", (request, response) -> PineSMPAPI.LOGGER.info("Received API call from " + request.ip()));
+			get("/test", (request, response) -> "Server running");      // just a test endpoint
+			get("/players", (request, response) -> {
+				Map<String, Object> responseMap = new LinkedHashMap<String, Object>();
+				// initializing basic response stuff
+				responseMap.put("success", true);
+				responseMap.put("errors", new ArrayList<>().toArray());
+				responseMap.put("messages", new ArrayList<>().toArray());
+
+				// forming the result map
+				Map<String, Object> result = new LinkedHashMap<String, Object>();
+				responseMap.put("result", result);
+
+				// list of players
+				List<String> players = new LinkedList<String>();
+				result.put("players", players);
+
+				for (ServerPlayerEntity player: PlayerLookup.all(server)) {
+					players.add(player.getDisplayName().getString());
+				}
+
+				Gson gson = new Gson();
+				return gson.toJson(responseMap);
+			});
+		});
 	}
 }
