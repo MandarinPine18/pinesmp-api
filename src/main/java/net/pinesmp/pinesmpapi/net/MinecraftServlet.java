@@ -19,10 +19,10 @@ public class MinecraftServlet {
 		this.server = server;
 	}
 
-	public static MinecraftServlet startServlet(MinecraftServer server, int port) {
+	public static MinecraftServlet startServlet(MinecraftServer server, int port, boolean ssl, String keystoreFile, String keystorePassword, String truststoreFile, String truststorePassword) {
 		if (instance == null) {
 			instance = new MinecraftServlet(server);
-			instance.configureServer(port);
+			instance.configureServer(port, ssl, keystoreFile, keystorePassword, truststoreFile, truststorePassword);
 		}
 		return MinecraftServlet.getInstance();
 	}
@@ -31,8 +31,13 @@ public class MinecraftServlet {
 		return instance;
 	}
 
-	private void configureServer(int port) {
+	private void configureServer(int port, boolean ssl, String keystoreFile, String keystorePassword, String truststoreFile, String truststorePassword) {
 		Spark.port(port);
-		get("pinesmp/api/test", (request, response) -> "this works");
+
+		if (ssl) {
+			Spark.secure(keystoreFile, keystorePassword, truststoreFile, truststorePassword);
+		}
+
+		get("/api/test", (request, response) -> "Server running");      // just a test endpoint
 	}
 }
