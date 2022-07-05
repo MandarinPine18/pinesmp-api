@@ -71,7 +71,7 @@ public class PineSMPAPI implements ModInitializer {
 		PineSMPAPI.server = server;
 
 		// spitting out defaults just in case there's missing stuff
-		PineSMPAPI.getConfiguration();
+		configuration = getConfiguration();
 		configuration.fileExport();
 
 		int port = Integer.parseInt(configuration.get("PORT"));
@@ -84,7 +84,7 @@ public class PineSMPAPI implements ModInitializer {
 		PineSMPAPI.servlet = MinecraftServlet.startServlet(server, port, ssl, keystoreFile, keystorePassword, truststoreFile, truststorePassword);
 	}
 
-	public static HashMap<String, String> getConfiguration() {
+	public static Configuration getConfiguration() {
 		if (configuration == null) {
 			configuration = new Configuration(new File("config/pinesmp-api.properties"), new File("config/pinesmp-api"));
 		}
