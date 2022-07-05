@@ -135,5 +135,11 @@ public class Configuration extends HashMap <String, String> {
 				throw new ConfigurationException("File writing in export failed unexpectedly.");
 			}
 		}
+
+		try {
+			out.flush();
+		} catch (IOException ignored) {
+			throw new ConfigurationException("File writing in export failed unexpectedly.");
+		}
 	}
 }
