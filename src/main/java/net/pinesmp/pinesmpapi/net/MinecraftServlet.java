@@ -6,14 +6,19 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.pinesmp.pinesmpapi.mod.PineSMPAPI;
 import net.pinesmp.pinesmpapi.util.Configuration;
-import spark.Filter;
-import spark.Request;
-import spark.Response;
-import spark.Spark;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
-import static spark.Spark.*;
+import static spark.Spark.before;
+import static spark.Spark.get;
+import static spark.Spark.path;
+import static spark.Spark.port;
+import static spark.Spark.secure;
+import static spark.Spark.unmap;
 
 public class MinecraftServlet {
 	private final MinecraftServer server;
