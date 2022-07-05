@@ -74,14 +74,7 @@ public class PineSMPAPI implements ModInitializer {
 		configuration = getConfiguration();
 		configuration.fileExport();
 
-		int port = Integer.parseInt(configuration.get("PORT"));
-		boolean ssl = Boolean.parseBoolean(configuration.get("SSL_ENCRYPTION"));
-		String keystoreFile = configuration.getFile("SSL_keystoreFile").getAbsolutePath();
-		String keystorePassword = configuration.get("SSL_keystorePassword");
-		String truststoreFile = configuration.getFile("SSL_truststoreFile").getAbsolutePath();
-		String truststorePassword = configuration.get("SSL_truststorePassword");
-
-		PineSMPAPI.servlet = MinecraftServlet.startServlet(server, port, ssl, keystoreFile, keystorePassword, truststoreFile, truststorePassword);
+		PineSMPAPI.servlet = MinecraftServlet.startServlet(server, configuration);
 	}
 
 	public static Configuration getConfiguration() {
