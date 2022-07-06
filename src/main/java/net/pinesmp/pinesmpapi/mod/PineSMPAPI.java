@@ -65,6 +65,7 @@ public class PineSMPAPI implements ModInitializer {
 		}));
 	}
 
+	// listeners
 	public void onStarting(MinecraftServer server) {
 		PineSMPAPI.server = server;
 
@@ -73,6 +74,10 @@ public class PineSMPAPI implements ModInitializer {
 		configuration.fileExport();
 
 		PineSMPAPI.servlet = MinecraftServlet.startServlet(server, configuration);
+	}
+
+	public void onStopping(MinecraftServer server) {
+		getConfiguration().fileExport();
 	}
 
 	public static Configuration getConfiguration() {
