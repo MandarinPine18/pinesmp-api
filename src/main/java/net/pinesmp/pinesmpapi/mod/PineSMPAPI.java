@@ -63,7 +63,6 @@ public class PineSMPAPI implements ModInitializer {
 
 			dispatcher.getRoot().addChild(testNode);
 		}));
-		LOGGER.info("Hello Fabric world!");
 	}
 
 	public void onStarting(MinecraftServer server) {
