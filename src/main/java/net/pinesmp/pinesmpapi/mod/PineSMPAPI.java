@@ -3,7 +3,7 @@ package net.pinesmp.pinesmpapi.mod;
 import com.mojang.brigadier.Command;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import net.pinesmp.pinesmpapi.listeners.ServerStartedListener;
+import net.pinesmp.pinesmpapi.listeners.ServerStartingListener;
 import net.pinesmp.pinesmpapi.net.MinecraftServlet;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -20,7 +20,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.HashMap;
 
 public class PineSMPAPI implements ModInitializer {
 	// This logger is used to write text to the console and the log file.
@@ -46,7 +45,7 @@ public class PineSMPAPI implements ModInitializer {
 
 		PineSMPAPI.instance = this;
 
-		ServerLifecycleEvents.SERVER_STARTED.register(new ServerStartedListener());
+		ServerLifecycleEvents.SERVER_STARTING.register(new ServerStartingListener());
 
 		Command<ServerCommandSource> command = context -> {
 			assert server != null;
@@ -67,7 +66,7 @@ public class PineSMPAPI implements ModInitializer {
 		LOGGER.info("Hello Fabric world!");
 	}
 
-	public void onStart(MinecraftServer server) {
+	public void onStarting(MinecraftServer server) {
 		PineSMPAPI.server = server;
 
 		// spitting out defaults just in case there's missing stuff

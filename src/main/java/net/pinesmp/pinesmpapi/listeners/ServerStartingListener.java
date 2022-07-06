@@ -4,9 +4,9 @@ import net.pinesmp.pinesmpapi.mod.PineSMPAPI;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.server.MinecraftServer;
 
-public class ServerStartedListener implements ServerLifecycleEvents.ServerStarted {
+public class ServerStartingListener implements ServerLifecycleEvents.ServerStarting {
 	@Override
-	public void onServerStarted(MinecraftServer server) {
-		PineSMPAPI.getInstance().onStart(server);
+	public void onServerStarting(MinecraftServer server) {
+		PineSMPAPI.getInstance().onStarting(server);
 	}
 }
