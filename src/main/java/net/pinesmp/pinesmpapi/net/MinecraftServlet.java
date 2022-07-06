@@ -104,7 +104,7 @@ public class MinecraftServlet {
 					Gson gson = new Gson();
 
 					// setting the response
-					response.body(gson.toJson(responseMap));
+					response.body(responseMap.serialize());
 					response.status(200);
 
 					return response.body();

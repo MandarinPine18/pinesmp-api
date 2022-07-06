@@ -35,11 +35,12 @@ public class ResponseMap extends LinkedHashMap<String, Object> {
 		this.success = success;
 	}
 
-	/*  // WIP
 	public String serialize() {
 		return new Gson().toJson(this);
 	}
 
+	// WIP
+	/*
 	public ResponseMap deserialize(String serialized) {
 		Type type = new TypeToken<ResponseMap>(){}.getType();
 		ResponseMap responseMap = new Gson().fromJson(serialized, type);
