@@ -6,6 +6,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.pinesmp.pinesmpapi.mod.PineSMPAPI;
 import net.pinesmp.pinesmpapi.util.Configuration;
+import net.pinesmp.pinesmpapi.util.ResponseMap;
 import spark.QueryParamsMap;
 import spark.Spark;
 
@@ -87,21 +88,14 @@ public class MinecraftServlet {
 			path("/players", () -> {
 				get("", (request, response) -> {
 					// initializing basic response stuff
-					Map<String, Object> responseMap = new LinkedHashMap<String, Object>();
-					responseMap.put("success", true);
-					responseMap.put("errors", new ArrayList<>().toArray());
-					responseMap.put("messages", new ArrayList<>().toArray());
-
-					// forming the result map
-					Map<String, Object> result = new LinkedHashMap<String, Object>();
-					responseMap.put("result", result);
+					ResponseMap responseMap = new ResponseMap();
 
 					// parameters
 					boolean uuid = Boolean.parseBoolean(request.queryParamOrDefault("uuid", "false"));  // true: get UUIDs, false: get display names
 
 					// list of players
 					List<String> players = new LinkedList<String>();
-					result.put("players", players);
+					responseMap.result.put("players", players);
 
 					for (ServerPlayerEntity player: PlayerLookup.all(server)) {
 						players.add(uuid ? player.getUuidAsString() : player.getDisplayName().getString());
