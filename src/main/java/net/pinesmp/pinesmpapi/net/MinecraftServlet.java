@@ -16,6 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import static spark.Spark.after;
 import static spark.Spark.before;
 import static spark.Spark.get;
 import static spark.Spark.path;
@@ -110,6 +111,16 @@ public class MinecraftServlet {
 					return response.body();
 				});
 			});
+			after("/*", ((request, response) -> {
+				int status = response.status();
+				if (100 <= status && status <= 399) {
+					PineSMPAPI.LOGGER.info("API call from " + request.ip() + " was successful (" + status + ")");
+				} else if (400 <= status && status <= 599) {
+					PineSMPAPI.LOGGER.info("API call from " + request.ip() + " failed (" + status + ")");
+				} else if (600 <= status) {
+					PineSMPAPI.LOGGER.info("API call from " + request.ip() + " had an unknown status code (" + status + ")");
+				}
+			}));
 		});
 	}
 }
