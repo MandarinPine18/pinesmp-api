@@ -6,6 +6,8 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.pinesmp.pinesmpapi.mod.PineSMPAPI;
 import net.pinesmp.pinesmpapi.util.Configuration;
+import spark.QueryParamsMap;
+import spark.Spark;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -17,6 +19,7 @@ import static spark.Spark.before;
 import static spark.Spark.get;
 import static spark.Spark.path;
 import static spark.Spark.port;
+import static spark.Spark.routes;
 import static spark.Spark.secure;
 import static spark.Spark.unmap;
 
@@ -69,36 +72,49 @@ public class MinecraftServlet {
 	}
 
 	private void doConfiguration() {
-		Spark.port(configuration.port);
+		port(configuration.port);
 
 		if (configuration.ssl) {
-			Spark.secure(configuration.keystoreFile, configuration.keystorePassword, configuration.truststoreFile, configuration.truststorePassword);
+			secure(configuration.keystoreFile, configuration.keystorePassword, configuration.truststoreFile, configuration.truststorePassword);
 		}
 
 		path("/api", () -> {
-			before("/*", (request, response) -> PineSMPAPI.LOGGER.info("Received API call from " + request.ip()));
+			before("/*", (request, response) -> {
+				PineSMPAPI.LOGGER.info("Received API call from " + request.ip());
+				response.type("application/json");
+			});
 			get("/test", (request, response) -> "Server running");      // just a test endpoint
-			get("/players", (request, response) -> {
-				Map<String, Object> responseMap = new LinkedHashMap<String, Object>();
-				// initializing basic response stuff
-				responseMap.put("success", true);
-				responseMap.put("errors", new ArrayList<>().toArray());
-				responseMap.put("messages", new ArrayList<>().toArray());
+			path("/players", () -> {
+				get("", (request, response) -> {
+					// initializing basic response stuff
+					Map<String, Object> responseMap = new LinkedHashMap<String, Object>();
+					responseMap.put("success", true);
+					responseMap.put("errors", new ArrayList<>().toArray());
+					responseMap.put("messages", new ArrayList<>().toArray());
 
-				// forming the result map
-				Map<String, Object> result = new LinkedHashMap<String, Object>();
-				responseMap.put("result", result);
+					// forming the result map
+					Map<String, Object> result = new LinkedHashMap<String, Object>();
+					responseMap.put("result", result);
 
-				// list of players
-				List<String> players = new LinkedList<String>();
-				result.put("players", players);
+					// parameters
+					boolean uuid = Boolean.parseBoolean(request.queryParamOrDefault("uuid", "false"));  // true: get UUIDs, false: get display names
 
-				for (ServerPlayerEntity player: PlayerLookup.all(server)) {
-					players.add(player.getDisplayName().getString());
-				}
+					// list of players
+					List<String> players = new LinkedList<String>();
+					result.put("players", players);
 
-				Gson gson = new Gson();
-				return gson.toJson(responseMap);
+					for (ServerPlayerEntity player: PlayerLookup.all(server)) {
+						players.add(uuid ? player.getUuidAsString() : player.getDisplayName().getString());
+					}
+
+					Gson gson = new Gson();
+
+					// setting the response
+					response.body(gson.toJson(responseMap));
+					response.status(200);
+
+					return response.body();
+				});
 			});
 		});
 	}
