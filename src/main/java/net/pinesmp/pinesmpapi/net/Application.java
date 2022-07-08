@@ -10,10 +10,6 @@ import org.springframework.context.annotation.Configuration;
 
 @SpringBootApplication
 public class Application extends SpringBootServletInitializer {
-
-	@Autowired
-	private ApplicationContext applicationContext;
-
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		return application.sources(Application.class, TestController.class);
