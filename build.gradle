@@ -2,7 +2,11 @@ plugins {
 	id 'fabric-loom' version '0.12-SNAPSHOT'
 	id 'maven-publish'
 	id 'com.github.johnrengelman.shadow' version '7.1.2'
+	id 'org.springframework.boot' version '2.7.1'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 }
+
+bootJar.setEnabled false
 
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
@@ -32,12 +36,20 @@ dependencies {
 	// These are included in the Fabric API production distribution and allow you to update your mod to the latest modules at a later more convenient time.
 
 	// modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
-	implementation "com.sparkjava:spark-core:2.9.3"
-	shadow "com.sparkjava:spark-core:2.9.3"
+	//implementation "com.sparkjava:spark-core:2.9.3"
+	//shadow "com.sparkjava:spark-core:2.9.3"
 	//files("libs/spark-core-2.9.3.jar")
 
-	implementation "com.google.code.gson:gson:2.9.0"
-	shadow 'com.google.code.gson:gson:2.9.0'
+	//implementation "com.google.code.gson:gson:2.9.0"
+	//shadow 'com.google.code.gson:gson:2.9.0'
+
+	implementation "org.springframework.boot:spring-boot-starter-web"
+	shadow "org.springframework.boot:spring-boot-starter-web"
+
+	//implementation "org.springframework.boot:spring-boot-starter-oauth2-resource-server"
+	//shadow "org.springframework.boot:spring-boot-starter-oauth2-resource-server"
+
+	//bootJar.enabled = false
 }
 
 processResources {
@@ -66,11 +78,27 @@ jar {
 	}
 }
 
+import com.github.jengelman.gradle.plugins.shadow.transformers.PropertiesFileTransformer
 shadowJar {
 	configurations = [project.configurations.shadow]
-	classifier "shadow-dev"
-	relocate "com.sparkjava", "net.pinesmp.api.shadow.sparkjava"
-	relocate "com.google.gson", "net.pinesmp.api.shadow.gson"
+	classifier "shadow"
+
+	// for Spring
+	zip64 = true
+
+	mergeServiceFiles()
+	append "META-INF/spring.handlers"
+	append "META-INF/spring.schemas"
+	append "META-INF/spring.tooling"
+	transform(PropertiesFileTransformer) {
+		paths = ["META-INF/spring.factories"]
+		mergeStrategy = "append"
+	}
+
+	// the rest
+	//relocate "com.sparkjava", "net.pinesmp.pinesmpapi.shadow.sparkjava"
+	//relocate "com.google.gson", "net.pinesmp.pinesmpapi.shadow.gson"
+	//relocate "org.springframework", "net.pinesmp.pinesmpapi.shadow.springframework"
 }
 
 remapJar {
