@@ -28,6 +28,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import java.io.File;
+import java.util.Collections;
 
 public class PineSMPAPI implements ModInitializer {
 	// This logger is used to write text to the console and the log file.
@@ -52,7 +53,12 @@ public class PineSMPAPI implements ModInitializer {
 		// Proceed with mild caution.
 
 		PineSMPAPI.instance = this;
-		new SpringApplicationBuilder(Application.class).web(WebApplicationType.SERVLET).run();
+
+		// configuring and running the Spring app
+		SpringApplication application = new SpringApplicationBuilder(Application.class)
+				.web(WebApplicationType.SERVLET).build();
+		application.setDefaultProperties(Collections.singletonMap("server.port", "80"));
+		application.run();
 
 		ServerLifecycleEvents.SERVER_STARTING.register(new ServerStartingListener());
 		ServerLifecycleEvents.SERVER_STOPPING.register(new ServerStoppingListener());
