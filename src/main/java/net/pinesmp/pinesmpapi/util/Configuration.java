@@ -16,7 +16,7 @@ public class Configuration extends HashMap <String, String> {
 	static {
 		defaults = new HashMap<String, String>();
 
-		defaults.put("PORT", "7070");
+		defaults.put("PORT", "8080");
 
 		defaults.put("SSL_ENCRYPTION", "false");
 		defaults.put("SSL_key-alias", "null");
