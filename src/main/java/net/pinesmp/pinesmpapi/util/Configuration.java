@@ -124,10 +124,9 @@ public class Configuration extends HashMap <String, String> {
 		}
 
 		ArrayList<String> lines = new ArrayList<String>();
-		for (String key: this.keySet()) {
+		for (String key: this.keySet().stream().sorted(String::compareToIgnoreCase).toList()) {     // inline alphabetizes the keys
 			lines.add(key + "=" + this.get(key));
 		}
-		lines.sort(String::compareToIgnoreCase);    // alphabetize real quick
 
 		for (String line: lines) {
 			try {
