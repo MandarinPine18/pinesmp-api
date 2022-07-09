@@ -6,7 +6,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
-import java.util.stream.Stream;
 
 public class Configuration extends HashMap <String, String> {
 	private final File file;

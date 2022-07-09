@@ -36,23 +36,12 @@ dependencies {
 	// These are included in the Fabric API production distribution and allow you to update your mod to the latest modules at a later more convenient time.
 
 	// modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
-	//implementation "com.sparkjava:spark-core:2.9.3"
-	//shadow "com.sparkjava:spark-core:2.9.3"
-	//files("libs/spark-core-2.9.3.jar")
-
-	//implementation "com.google.code.gson:gson:2.9.0"
-	//shadow 'com.google.code.gson:gson:2.9.0'
 
 	implementation "org.springframework.boot:spring-boot-starter-web"
 	shadow "org.springframework.boot:spring-boot-starter-web"
 
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	shadow 'org.springframework.boot:spring-boot-starter-thymeleaf'
-
-	//implementation "org.springframework.boot:spring-boot-starter-oauth2-resource-server"
-	//shadow "org.springframework.boot:spring-boot-starter-oauth2-resource-server"
-
-	//bootJar.enabled = false
 }
 
 processResources {
@@ -97,19 +86,10 @@ shadowJar {
 		paths = ["META-INF/spring.factories"]
 		mergeStrategy = "append"
 	}
-
-	// the rest
-	//relocate "com.sparkjava", "net.pinesmp.pinesmpapi.shadow.sparkjava"
-	//relocate "com.google.gson", "net.pinesmp.pinesmpapi.shadow.gson"
-	//relocate "org.springframework", "net.pinesmp.pinesmpapi.shadow.springframework"
 }
 
 remapJar {
 	input = tasks.shadowJar.archiveFile.get()
-
-	//inputFile = file("libs/spark-core-2.9.3.jar")
-	//sourceNamespace = "spark"
-	//targetNamespace = "intermediary"
 }
 
 prepareRemapJar {

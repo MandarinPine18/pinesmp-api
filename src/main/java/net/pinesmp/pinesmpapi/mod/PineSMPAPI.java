@@ -4,7 +4,6 @@ import com.mojang.brigadier.Command;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import net.pinesmp.pinesmpapi.listeners.ServerStartingListener;
-//import net.pinesmp.pinesmpapi.net.MinecraftServlet;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -23,12 +22,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.context.ConfigurableApplicationContext;
 
 import java.io.File;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,7 +34,6 @@ public class PineSMPAPI implements ModInitializer {
 	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final Logger LOGGER = LoggerFactory.getLogger("pinesmp-api");
 	public static MinecraftServer server = null;
-	//private static MinecraftServlet servlet = null;
 	private static Configuration configuration = null;
 
 	// this is a singleton
