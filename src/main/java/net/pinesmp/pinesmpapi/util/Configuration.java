@@ -19,10 +19,11 @@ public class Configuration extends HashMap <String, String> {
 		defaults.put("PORT", "7070");
 
 		defaults.put("SSL_ENCRYPTION", "false");
-		defaults.put("SSL_keystoreFile", "null");
-		defaults.put("SSL_keystorePassword", "null");
-		defaults.put("SSL_truststoreFile", "null");
-		defaults.put("SSL_truststorePassword", "null");
+		defaults.put("SSL_key-alias", "null");
+		defaults.put("SSL_key-store", "null");
+		defaults.put("SSL_key-store-password", "null");
+		defaults.put("SSL_trust-store", "null");
+		defaults.put("SSL_trust-store-password", "null");
 	}
 
 	public static String getDefault(String key) {
