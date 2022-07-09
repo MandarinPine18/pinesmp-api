@@ -29,6 +29,8 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 import java.io.File;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PineSMPAPI implements ModInitializer {
 	// This logger is used to write text to the console and the log file.
@@ -54,10 +56,24 @@ public class PineSMPAPI implements ModInitializer {
 
 		PineSMPAPI.instance = this;
 
-		// configuring and running the Spring app
+		// spitting out defaults just in case there's missing stuff
+		configuration = getConfiguration();
+		configuration.fileExport();
+
+		// building a configuration map for the spring application
+		Map<String, Object> applicationProperties = new HashMap<String, Object>();
+		applicationProperties.put("server.port", configuration.get("PORT"));
+		applicationProperties.put("server.ssl.enabled", configuration.get("SSL_ENCRYPTION"));
+		applicationProperties.put("server.ssl.key-alias", configuration.get("SSL_key-alias"));
+		applicationProperties.put("server.ssl.key-store", configuration.getFile("SSL_key-store").getAbsolutePath());
+		applicationProperties.put("server.ssl.key-store-password", configuration.get("SSL_key-store-password"));
+		applicationProperties.put("server.ssl.trust-store", configuration.getFile("SSL_trust-store").getAbsolutePath());
+		applicationProperties.put("server.ssl.trust-store-password", configuration.get("SSL_trust-store-password"));
+
+		// running the spring application
 		SpringApplication application = new SpringApplicationBuilder(Application.class)
 				.web(WebApplicationType.SERVLET).build();
-		application.setDefaultProperties(Collections.singletonMap("server.port", "80"));
+		application.setDefaultProperties(applicationProperties);
 		application.run();
 
 		ServerLifecycleEvents.SERVER_STARTING.register(new ServerStartingListener());
@@ -84,10 +100,6 @@ public class PineSMPAPI implements ModInitializer {
 	// listeners
 	public void onStarting(MinecraftServer server) {
 		PineSMPAPI.server = server;
-
-		// spitting out defaults just in case there's missing stuff
-		configuration = getConfiguration();
-		configuration.fileExport();
 
 		PlayerController.setServer(server);
 	}
