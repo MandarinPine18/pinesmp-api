@@ -53,6 +53,7 @@ public class PineSMPAPI implements ModInitializer {
 		new SpringApplicationBuilder(Application.class).web(WebApplicationType.SERVLET).run();
 
 		ServerLifecycleEvents.SERVER_STARTING.register(new ServerStartingListener());
+		ServerLifecycleEvents.SERVER_STOPPING.register(new ServerStoppingListener());
 
 		Command<ServerCommandSource> command = ignored -> {
 			assert server != null;
