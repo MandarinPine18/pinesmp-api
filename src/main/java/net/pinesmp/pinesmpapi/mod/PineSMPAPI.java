@@ -15,7 +15,9 @@ import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.pinesmp.pinesmpapi.listeners.ServerStoppingListener;
 import net.pinesmp.pinesmpapi.net.Application;
+import net.pinesmp.pinesmpapi.net.PlayerController;
 import net.pinesmp.pinesmpapi.util.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,7 +83,7 @@ public class PineSMPAPI implements ModInitializer {
 		configuration = getConfiguration();
 		configuration.fileExport();
 
-		//PineSMPAPI.servlet = MinecraftServlet.startServlet(server, configuration);
+		PlayerController.setServer(server);
 	}
 
 	public void onStopping(MinecraftServer server) {
