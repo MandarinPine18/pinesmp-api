@@ -59,6 +59,7 @@ public class PineSMPAPI implements ModInitializer {
 		Map<String, Object> applicationProperties = new HashMap<String, Object>();
 		applicationProperties.put("server.port", configuration.get("PORT"));
 		applicationProperties.put("server.ssl.enabled", configuration.get("SSL_ENCRYPTION"));
+		applicationProperties.put("server.ssl.client-auth", configuration.get("SSL_client-auth"));
 		applicationProperties.put("server.ssl.key-alias", configuration.get("SSL_key-alias"));
 		applicationProperties.put("server.ssl.key-store", configuration.getFile("SSL_key-store").getAbsolutePath());
 		applicationProperties.put("server.ssl.key-store-password", configuration.get("SSL_key-store-password"));

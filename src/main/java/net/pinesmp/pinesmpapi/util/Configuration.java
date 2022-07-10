@@ -5,6 +5,7 @@ import net.pinesmp.pinesmpapi.exceptions.ConfigurationException;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 public class Configuration extends HashMap <String, String> {
@@ -12,17 +13,26 @@ public class Configuration extends HashMap <String, String> {
 	private final File folder;
 
 	private static final HashMap<String, String> defaults;
+	private static final List<String> keys;
 	static {
-		defaults = new HashMap<String, String>();
+		defaults = new HashMap<>();
+		keys = new ArrayList<String>();
+		List<String> values = new ArrayList<String>();
 
-		defaults.put("PORT", "8080");
+		// default key-value definitions to be mapped in defaults
+		keys.add("PORT");                       values.add("8080");
+		keys.add("SSL_ENCRYPTION");             values.add("false");
+		keys.add("SSL_client-auth");            values.add("want");
+		keys.add("SSL_key-alias");              values.add("null");
+		keys.add("SSL_key-store");              values.add("null");
+		keys.add("SSL_key-store-password");     values.add("null");
+		keys.add("SSL_trust-store");            values.add("null");
+		keys.add("SSL_trust-store-password");   values.add("null");
 
-		defaults.put("SSL_ENCRYPTION", "false");
-		defaults.put("SSL_key-alias", "null");
-		defaults.put("SSL_key-store", "null");
-		defaults.put("SSL_key-store-password", "null");
-		defaults.put("SSL_trust-store", "null");
-		defaults.put("SSL_trust-store-password", "null");
+		assert keys.size() == values.size();
+		for(int i = 0; i < keys.size(); i++) {
+			defaults.put(keys.get(i), values.get(i));
+		}
 	}
 
 	public static String getDefault(String key) {
@@ -100,7 +110,7 @@ public class Configuration extends HashMap <String, String> {
 
 		ArrayList<String> lines = new ArrayList<String>(in.lines().toList());
 
-		for (String key: this.keySet()) {
+		for (String key: keys) {
 			String line;
 			try {
 				line = lines.stream().filter((x) -> (x.startsWith(key + "="))).findFirst().get();    // get a line matching the key
@@ -123,7 +133,7 @@ public class Configuration extends HashMap <String, String> {
 		}
 
 		ArrayList<String> lines = new ArrayList<String>();
-		for (String key: this.keySet().stream().sorted(String::compareToIgnoreCase).toList()) {     // inline alphabetizes the keys
+		for (String key: keys) {
 			lines.add(key + "=" + this.get(key));
 		}
 
