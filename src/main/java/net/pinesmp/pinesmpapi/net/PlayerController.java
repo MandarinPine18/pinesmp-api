@@ -25,7 +25,7 @@ public class PlayerController {
 		return server != null;
 	}
 
-	@RequestMapping("")
+	@RequestMapping("s")
 	public Response playerList(@RequestParam(name = "uuid", defaultValue = "false", required = false) boolean wantsUuid) {
 		// make sure the controller is ready
 		if (!isReady()) {
