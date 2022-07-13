@@ -1,19 +1,10 @@
 package net.pinesmp.pinesmpapi.mod;
 
-import com.mojang.brigadier.Command;
-
-import com.mojang.brigadier.tree.LiteralCommandNode;
 import net.pinesmp.pinesmpapi.listeners.ServerStartingListener;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
 import net.pinesmp.pinesmpapi.listeners.ServerStoppingListener;
 import net.pinesmp.pinesmpapi.net.Application;
 import net.pinesmp.pinesmpapi.net.PlayerController;
@@ -74,23 +65,6 @@ public class PineSMPAPI implements ModInitializer {
 
 		ServerLifecycleEvents.SERVER_STARTING.register(new ServerStartingListener());
 		ServerLifecycleEvents.SERVER_STOPPING.register(new ServerStoppingListener());
-
-		Command<ServerCommandSource> command = ignored -> {
-			assert server != null;
-			server.sendMessage(Text.literal("test command called"));
-			for (ServerPlayerEntity player : PlayerLookup.all(server)) {
-				server.sendMessage(player.getDisplayName());
-			}
-			return 0;
-		};
-		CommandRegistrationCallback.EVENT.register(((dispatcher, registryAccess, environment) -> {
-			LiteralCommandNode<ServerCommandSource> testNode = CommandManager
-					.literal("test")
-					.executes(command)
-					.build();
-
-			dispatcher.getRoot().addChild(testNode);
-		}));
 	}
 
 	// listeners
