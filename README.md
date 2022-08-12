@@ -1,9 +1,9 @@
-# Fabric Example Mod
+# PineSMP API
 
 ## Setup
 
-For setup instructions please see the [fabric wiki page](https://fabricmc.net/wiki/tutorial:setup) that relates to the IDE that you are using.
+Drag the .jar file for whichever loader you use into the "Mods" folder of your .minecraft or server folder.
 
 ## License
 
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+Copyright Ethan Parab 2022. All rights reserved.
